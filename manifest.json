@@ -1,0 +1,39 @@
+{
+  "manifest_version": 3,
+  "name": "Z Parser",
+  "description": "მანქანა ანახე და გადაიტანს ყველას და ყველაფერს.",
+  "version": "1.7.3",
+  "icons": {
+    "16": "logo.png",
+    "32": "logo.png",
+    "48": "logo.png",
+    "128": "logo.png"
+  },
+  "background": {
+    "service_worker": "scripts/background.js"
+  },
+  "host_permissions": [
+    "https://*.manheim.com/*","https://manheim.com/*"
+  ],
+  "action": {
+    "default_popup": "index.html",
+    "default_icon": {
+      "16": "logo.png",
+      "32": "logo.png",
+      "48": "logo.png",
+      "128": "logo.png"
+    }
+  },
+  "content_scripts": [
+    {
+        "matches": ["https://*.manheim.com/*"],
+        "js": ["scripts/jquery.js","login.js","data_set_myauto.js","scripts/website.js"],
+        "world": "MAIN"
+    }
+  ],
+  "permissions": ["scripting","activeTab"],
+  "web_accessible_resources": [{ 
+    "resources": ["data_set_myauto.json"],
+    "matches": ["http://*/*", "https://*/*"]
+  }]
+}

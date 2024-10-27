@@ -1,0 +1,25 @@
+body {
+    width: 20rem;
+    background-color: #ef3854;
+    color:#fff;
+}
+ul {
+    list-style: inside trad-chinese-informal;
+}
+
+li {
+    padding: 0.25rem;
+    font-size: large;
+}
+
+h3,
+p {
+    margin: 0;
+}
+
+button {
+    background-color: #fff;
+    border: 0px;
+    padding: 10px;
+    border-radius: 10px;
+}
