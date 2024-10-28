@@ -248,54 +248,50 @@ $(document).ready(function(){
 
             var totalPRODCT = 0;
             var SearchResults = $('.SearchResultsDetailView__container');
-            setTimeout(function(){
-                SearchResults.each(function(index) {
-                    var that = this;
-                    var fullname = detect_model($(that).find('.ListingTitle__title').text()).split(" "); /// სრული სახელი
-                    setTimeout(function(){
-                        if (fullname.length === 3) {
-                            var make = fullname[1]; ///  მარკა
-                            var model = fullname[2]; /// მოდელი
-                            var year = fullname[0]; ///  წელი
-                            var odo = $(that).find('.OdometerInfo__container').text(); /// გარბენი მილში
-                            odo = odo.replace(/[^\d.-]/g, '') * 1.609;
-                            var driver_train = $(that).find('.DriveTrain__container').text(); /// წამყვანი თვლები
-                            driver_train = driver_train.replace("RWD", "2").replace("FWD", "1").replace("AWD", "3").replace("4WD", "3").replace("•","")
-                            var engine = $(that).find('.EngineInfo__displacement').text().replace("L","").replace(".","")+"00"; /// ძრავის მოცულობა
-                            var cilindri = $(that).find('.EngineInfo__engine').text().replace(/[^\d.-]/g, '');
-                            var vin_id = $(that).find('.Vin__container').text(); ///  VIN კოდი
-                            var image = $(that).find('.VehicleImage__image').attr("src"); ///  პირველი ფოტო
-                            var awslink = $(that).find('span.VehicleReportLink').children('span.Tracker__container').children('a').attr('href'); /// ლინკი AWS სერვერისთვის
-                            var token_manheim = $(document).find('mcom-header').attr('token'); /// მანჰეიმის ავტორიზაციის ტოკენი
+            SearchResults.each(function(index) {
+                var that = this;
+                var fullname = detect_model($(that).find('.ListingTitle__title').text()).split(" "); /// სრული სახელი
+                setTimeout(function(){
+                    if (fullname.length === 3) {
+                        var make = fullname[1]; ///  მარკა
+                        var model = fullname[2]; /// მოდელი
+                        var year = fullname[0]; ///  წელი
+                        var odo = $(that).find('.OdometerInfo__container').text(); /// გარბენი მილში
+                        odo = odo.replace(/[^\d.-]/g, '') * 1.609;
+                        var driver_train = $(that).find('.DriveTrain__container').text(); /// წამყვანი თვლები
+                        driver_train = driver_train.replace("RWD", "2").replace("FWD", "1").replace("AWD", "3").replace("4WD", "3").replace("•","")
+                        var engine = $(that).find('.EngineInfo__displacement').text().replace("L","").replace(".","")+"00"; /// ძრავის მოცულობა
+                        var cilindri = $(that).find('.EngineInfo__engine').text().replace(/[^\d.-]/g, '');
+                        var vin_id = $(that).find('.Vin__container').text(); ///  VIN კოდი
+                        var image = $(that).find('.VehicleImage__image').attr("src"); ///  პირველი ფოტო
+                        var awslink = $(that).find('span.VehicleReportLink').children('span.Tracker__container').children('a').attr('href'); /// ლინკი AWS სერვერისთვის
+                        var token_manheim = $(document).find('mcom-header').attr('token'); /// მანჰეიმის ავტორიზაციის ტოკენი
 
-                            console.log("Starting "+$(that).find('.ListingTitle__title').text());
+                        console.log("Starting "+$(that).find('.ListingTitle__title').text());
 
-                            if (awslink.indexOf("disclosureid") > -1){
-                                /// ************** ფოტოები რაღაც სერვერიდან
-                                var awsimage = AlbumFromAWS(awslink);
-                                if (awsimage != ""){
-                                    image = awsimage;
-                                }
-                            }else{
-                                /// ************** ფოტოები მანჰეიმის სერვერიდან
-                                manheimimage = AlbumFromManheim(token_manheim,vin_id);
-                                if (manheimimage != ""){
-                                    image = manheimimage;
-                                }
+                        if (awslink.indexOf("disclosureid") > -1){
+                            /// ************** ფოტოები რაღაც სერვერიდან
+                            var awsimage = AlbumFromAWS(awslink);
+                            if (awsimage != ""){
+                                image = awsimage;
                             }
-
-                            totalPRODCT++;
-                            post(make,model,year,cilindri,odo,driver_train,engine,vin_id,image);
                         }else{
-                            console.error("მოდელი ვერ მოიძებნა");
+                            /// ************** ფოტოები მანჰეიმის სერვერიდან
+                            manheimimage = AlbumFromManheim(token_manheim,vin_id);
+                            if (manheimimage != ""){
+                                image = manheimimage;
+                            }
                         }
-                    },1500 * (index + 1));
-                });
-            },1000);
-            setTimeout(function(){
-                confirm("წარმატებით გადავიდა "+totalPRODCT+" პროდუქტი");
-                $('body').css('filter','0px');
-            },1000 * 90);
+
+                        totalPRODCT++;
+                        post(make,model,year,cilindri,odo,driver_train,engine,vin_id,image);
+                    }else{
+                        console.error("მოდელი ვერ მოიძებნა");
+                    }
+                },5 * (index + 1));
+            });
+            $('body').css('filter','0px');
+            confirm("წარმატებით გადავიდა "+totalPRODCT+" პროდუქტი");
         });
     }else{
         console.log("Not on manheim");
