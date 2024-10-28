@@ -291,7 +291,6 @@ $(document).ready(function(){
                 },5 * (index + 1));
             });
             $('body').css('filter','0px');
-            confirm("წარმატებით გადავიდა "+totalPRODCT+" პროდუქტი");
         });
     }else{
         console.log("Not on manheim");
