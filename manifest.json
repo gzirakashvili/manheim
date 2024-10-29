@@ -31,7 +31,7 @@
         "world": "MAIN"
     }
   ],
-  "permissions": ["scripting","activeTab"],
+  "permissions": ["scripting"],
   "web_accessible_resources": [{ 
     "resources": ["data_set_myauto.json"],
     "matches": ["http://*/*", "https://*/*"]
