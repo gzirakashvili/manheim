@@ -111,36 +111,30 @@ $(document).ready(function(){
     }
     
 
-    function detect_model(fullname){
-        pname = fullname.toLowerCase();
-        const fullnameARR = pname.split(" ");
-        var model = "";
-        var mark = "";
-        var year = "";
-        year = fullnameARR[0];
-        fullnameARR.splice(0, 1);
+    function detect_model(model,mid){
+        var model_id = false;
+        model = model.toLowerCase().replaceAll(" ","");
 
-        if (pname.includes("alfa romeo") || pname.includes("land rover")){
-            var markAR = fullnameARR[0]+""+fullnameARR[1];
-        }else{
-            var markAR = fullnameARR[0];
-        }
-
-        for (const marks of data_myauto['data']['mans']) {
-            if (marks.title.toLowerCase() == markAR.toLowerCase()){
-                mark = marks.id;
-                for (const models of data_myauto['data']['models']) {
-                    if (pname.includes('amg ')){
-                        pname = pname.replaceAll("3", "3amg")
-                    }
-                    if (models.manId == marks.id && mark != models.title.toLowerCase() && pname.replaceAll(' ','').includes(models.title.toLowerCase()) && model == ""){
-                        model = models.id;
-                    }
-                }
+        for (const models of data_myauto['data']['models']) {
+            if (models.manId == mid && models.title.toLowerCase() == model){
+                model_id = models.id;
             }
         }
-        return year+" "+mark+" "+model;
+        return model_id;
     }
+
+    function detect_make(mname){
+        var make = false;
+        mname = mname.toLowerCase().replaceAll(" ","");
+
+        for (const marks of data_myauto['data']['mans']) {
+            if (marks.title.toLowerCase() == mname){
+                make = marks.id;
+            }
+        }
+        return make;
+    }
+
     
     function AlbumFromAWS(link){
         var image = "";
@@ -250,25 +244,29 @@ $(document).ready(function(){
             var SearchResults = $('.SearchResultsDetailView__container');
             SearchResults.each(function(index) {
                 var that = this;
-                var fullname = detect_model($(that).find('.ListingTitle__title').text()).split(" "); /// სრული სახელი
+                var dataSET = JSON.parse($(that).find('.stockwave-vehicle-info').text());
                 setTimeout(function(){
-                    if (fullname.length === 3) {
-                        var make = fullname[1]; ///  მარკა
-                        var model = fullname[2]; /// მოდელი
-                        var year = fullname[0]; ///  წელი
-                        var odo = $(that).find('.OdometerInfo__container').text(); /// გარბენი მილში
-                        odo = odo.replace(/[^\d.-]/g, '') * 1.609;
-                        var driver_train = $(that).find('.DriveTrain__container').text(); /// წამყვანი თვლები
-                        driver_train = driver_train.replace("RWD", "2").replace("FWD", "1").replace("AWD", "3").replace("4WD", "3").replace("•","")
-                        var engine = $(that).find('.EngineInfo__displacement').text().replace("L","").replace(".","")+"00"; /// ძრავის მოცულობა
-                        var cilindri = $(that).find('.EngineInfo__engine').text().replace(/[^\d.-]/g, '');
-                        var vin_id = $(that).find('.Vin__container').text(); ///  VIN კოდი
-                        var image = $(that).find('.VehicleImage__image').attr("src"); ///  პირველი ფოტო
-                        var awslink = $(that).find('span.VehicleReportLink').children('span.Tracker__container').children('a').attr('href'); /// ლინკი AWS სერვერისთვის
-                        var token_manheim = $(document).find('mcom-header').attr('token'); /// მანჰეიმის ავტორიზაციის ტოკენი
+                    var make = detect_make(dataSET.designatedDescriptionEnrichment.manufacturer); /// მარკა
+                    if (make == 25){
+                        var trim_model = dataSET.designatedDescriptionEnrichment.trim.toString().replace("AMG ","").replace("3 S", "3").replace("3","3AMG");
+                        var model = detect_model(trim_model,make); /// მოდელი
+                    }else{
+                        var model = detect_model(dataSET.designatedDescriptionEnrichment.model,make); /// მოდელი
+                    }
+                    var year = dataSET.sourceYear; /// წელი
+                    var odo = dataSET.odometer.toString(); /// გარბენი მილში 
+                    odo = odo.replace(/[^\d.-]/g, '') * 1.609;
+                    var driver_train = dataSET.driveTrain; /// წამყვანი თვლები 
+                    driver_train = driver_train.replace("RWD", "2").replace("FWD", "1").replace("AWD", "3").replace("4WD", "3").replace("•","")
+                    var engine = dataSET.engineDisplacement.replace("L","").replace(".","")+"00"; /// ძრავის მოცულობა 
+                    var cilindri = dataSET.engineType.replace(/[^\d.-]/g, ''); /// ცილინდრიები 
+                    var vin_id = dataSET.vin; ///  VIN კოდი 
+                    var image = ""; ///  პირველი ფოტო 
+                    var awslink = $(that).find('span.VehicleReportLink').children('span.Tracker__container').children('a').attr('href'); /// ლინკი AWS სერვერისთვის
+                    var token_manheim = $(document).find('mcom-header').attr('token'); /// მანჰეიმის ავტორიზაციის ტოკენი
 
-                        console.log("Starting "+$(that).find('.ListingTitle__title').text());
-
+                    console.log("Starting "+dataSET.designatedDescriptionEnrichment.manufacturer.toString()+" "+dataSET.designatedDescriptionEnrichment.model.toString()+" "+year.toString());
+                    if (make != false && model != false) {
                         if (awslink.indexOf("disclosureid") > -1){
                             /// ************** ფოტოები რაღაც სერვერიდან
                             var awsimage = AlbumFromAWS(awslink);
@@ -285,12 +283,14 @@ $(document).ready(function(){
 
                         totalPRODCT++;
                         post(make,model,year,cilindri,odo,driver_train,engine,vin_id,image);
+                        ///console.log(make,model,year,cilindri,odo,driver_train,engine,vin_id,image);
                     }else{
                         console.error("მოდელი ვერ მოიძებნა");
+                        console.log(dataSET);
                     }
                 },5 * (index + 1));
             });
-            $('body').css('filter','0px');
+            $('body').css('filter','blur(0px)');
         });
     }else{
         console.log("Not on manheim");
