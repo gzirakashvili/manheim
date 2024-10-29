@@ -248,7 +248,12 @@ $(document).ready(function(){
                 setTimeout(function(){
                     var make = detect_make(dataSET.designatedDescriptionEnrichment.manufacturer); /// მარკა
                     if (make == 25){
-                        var trim_model = dataSET.designatedDescriptionEnrichment.trim.toString().replace("AMG ","").replace("3 S", "3").replace("3","3AMG");
+                        var trim_model = dataSET.designatedDescriptionEnrichment.trim.toString();
+                        if (trim_model.includes('AMG GT')){
+                            trim_model = trim_model;
+                        }else{
+                            trim_model = trim_model.replace("AMG ","").replace("3 S", "3").replace("3","3AMG");
+                        }
                         var model = detect_model(trim_model,make); /// მოდელი
                     }else{
                         var model = detect_model(dataSET.designatedDescriptionEnrichment.model,make); /// მოდელი
