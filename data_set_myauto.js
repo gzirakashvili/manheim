@@ -9562,7 +9562,7 @@ data: {
     {
         id: 10726,
         manId: 3,
-        title: '230i',
+        title: '230',
         group: '2er',
         isCar: true,
         isMoto: false,

@@ -92,6 +92,7 @@ $(document).ready(function(){
             'change': null,
             'PayWithCard': 0,
         }
+
         $.ajax({
             url: 'https://api2.myauto.ge/ka/user/addProduct',
             crossDomain: true,
@@ -102,23 +103,50 @@ $(document).ready(function(){
             contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
             data: json_data,
             success: function(response){
-                console.log(response);
+                if (response.statusCode == 1){
+                    console.log(response);
+                }else{
+                    console.log(image);
+                }
             },
             error: function(response){
-                console.error(response);
+                console.warn(response);
             }
         });
     }
     
 
-    function detect_model(model,mid){
+    function detect_model(model,model2,mid){
         var model_id = false;
-        model = model.toLowerCase().replaceAll(" ","");
 
+        /// MB
+        if (mid == 25){
+            if (model2.includes('AMG GT')){
+                model2 = model2;
+            }else if (model2.includes('AMG')){
+                if (model2.includes(' GLA ')){
+                    model2 = model2.replace("AMG ","").replace('GLA 45','gla45amg').replace('GLA 35','GLA 350');
+                }else{
+                    model2 = model2.replace("AMG ","").replace("3 S", "3").replace("3","3AMG");
+                }
+            }
+        }
+        /// BMW
+        if (mid == 3){
+            if (model.includes('Series')){
+                model2 = model2.replace('xDrive','').replace('i','').replace('e','');
+            }
+        }
+
+        model = model.toLowerCase().replaceAll(" ","");
+        model2 =  model2.toLowerCase().replaceAll(" ","");
+
+        ///console.log(model,model2,mid);
         for (const models of data_myauto['data']['models']) {
-            if (models.manId == mid && models.title.toLowerCase() == model){
+            if (models.manId == mid && (models.title.toLowerCase() == model || models.title.toLowerCase() == model2)){
                 model_id = models.id;
             }
+
         }
         return model_id;
     }
@@ -165,18 +193,13 @@ $(document).ready(function(){
                     async: false,            
                     success: function(response){
                         try {
-                            var interior = 0;
                             var exterior = 0;
                             var path = response.data.path;
                             response.data.list.forEach(element => {
                                 if (element.type == "img"){
-                                    if (element.category[0] == "exterior" && exterior < 7){
+                                    if (exterior < 7){
                                         image = image+""+path+""+element.path+",";
                                         exterior = exterior + 1;
-                                    }
-                                    if (element.category[0] == "interior" && interior < 7){
-                                        image = image+""+path+""+element.path+",";
-                                        interior = interior + 1;
                                     }
                                 }
                             });
@@ -184,12 +207,12 @@ $(document).ready(function(){
                         }
                     },
                     error: function(response){
-                        console.error(response);
+                        console.warn(response);
                     }
                 });
             },
             error: function(response){
-                console.error(response);
+                console.warn(response);
             }
         });
         return image;
@@ -219,7 +242,7 @@ $(document).ready(function(){
             success: function(response) {
                 try {
                     response.items[0].images.forEach(data => {
-                        if (count < 15){
+                        if (count < 7){
                             image = image+""+data.largeUrl+",";
                             count = count + 1;
                         }
@@ -228,43 +251,39 @@ $(document).ready(function(){
                 }
             },
             error: function(response){
-                console.error(response);
+                console.warn(response);
             }
         });
         return image;
     }
     if (window.location.toString().indexOf("search.manheim.com") > -1) {
-        $("body").append("<button id='startMoving' style='position: fixed;border:0px;z-index: 10000;bottom: 40px;right: 40px;text-align: center;background: transparent;'>"+svg+"</button>");
 
-        $("#startMoving").click(function(){
-            $('body').css('filter','blur(4px)');
-            console.clear();
+        setTimeout(function(){
+            $("body").append("<button id='startMoving' style='position: fixed;border:0px;z-index: 10000;bottom: 40px;right: 40px;text-align: center;background: transparent;'>"+svg+"</button>");
+            $('select[data-test-id="results-per-page-select"] option').remove();
+            $('select[data-test-id="results-per-page-select"]').append('<option value="5">5</option>');
+            $('select[data-test-id="results-per-page-select"]').append('<option value="10">10</option>');
+            $('select[data-test-id="results-per-page-select"]').append('<option value="15">15</option>');
+            $('select[data-test-id="results-per-page-select"]').append('<option value="20">20</option>');
 
-            var totalPRODCT = 0;
-            var SearchResults = $('.SearchResultsDetailView__container');
-            SearchResults.each(function(index) {
-                var that = this;
-                var dataSET = JSON.parse($(that).find('.stockwave-vehicle-info').text());
-                setTimeout(function(){
+            $("#startMoving").click(function(){
+                console.clear();
+
+                var totalPRODCT = 0;
+                var SearchResults = $('.SearchResultsDetailView__container');
+                SearchResults.each(function(index) {
+                    var that = this;
+                    var dataSET = JSON.parse($(that).find('.stockwave-vehicle-info').text());
                     var make = detect_make(dataSET.designatedDescriptionEnrichment.manufacturer); /// მარკა
-                    if (make == 25){
-                        var trim_model = dataSET.designatedDescriptionEnrichment.trim.toString();
-                        if (trim_model.includes('AMG GT')){
-                            trim_model = trim_model;
-                        }else{
-                            trim_model = trim_model.replace("AMG ","").replace("3 S", "3").replace("3","3AMG");
-                        }
-                        var model = detect_model(trim_model,make); /// მოდელი
-                    }else{
-                        var model = detect_model(dataSET.designatedDescriptionEnrichment.model,make); /// მოდელი
-                    }
+                    var trim_model = dataSET.designatedDescriptionEnrichment.trim.toString(); /// მოდელი2
+                    var model = detect_model(dataSET.designatedDescriptionEnrichment.model,trim_model,make); /// მოდელი
                     var year = dataSET.sourceYear; /// წელი
                     var odo = dataSET.odometer.toString(); /// გარბენი მილში 
                     odo = odo.replace(/[^\d.-]/g, '') * 1.609;
                     var driver_train = dataSET.driveTrain; /// წამყვანი თვლები 
                     driver_train = driver_train.replace("RWD", "2").replace("FWD", "1").replace("AWD", "3").replace("4WD", "3").replace("•","")
-                    var engine = dataSET.engineDisplacement.replace("L","").replace(".","")+"00"; /// ძრავის მოცულობა 
-                    var cilindri = dataSET.engineType.replace(/[^\d.-]/g, ''); /// ცილინდრიები 
+                    var engine = dataSET.engineDisplacement; if (engine != null) { engine = engine.replace("L","").replace(".","")+"00"; }else{ engine = '0' } /// ძრავის მოცულობა 
+                    var cilindri = dataSET.engineType; if (cilindri != "Electric") { cilindri = cilindri.replace(/[^\d.-]/g, ''); }else{ cilindri = '0';} /// ცილინდრიები 
                     var vin_id = dataSET.vin; ///  VIN კოდი 
                     var image = ""; ///  პირველი ფოტო 
                     var awslink = $(that).find('span.VehicleReportLink').children('span.Tracker__container').children('a').attr('href'); /// ლინკი AWS სერვერისთვის
@@ -272,31 +291,35 @@ $(document).ready(function(){
 
                     console.log("Starting "+dataSET.designatedDescriptionEnrichment.manufacturer.toString()+" "+dataSET.designatedDescriptionEnrichment.model.toString()+" "+year.toString());
                     if (make != false && model != false) {
-                        if (awslink.indexOf("disclosureid") > -1){
-                            /// ************** ფოტოები რაღაც სერვერიდან
-                            var awsimage = AlbumFromAWS(awslink);
-                            if (awsimage != ""){
-                                image = awsimage;
+                        try {
+                            if (awslink.indexOf("disclosureid") > -1){
+                                /// ************** ფოტოები რაღაც სერვერიდან
+                                var awsimage = AlbumFromAWS(awslink);
+                                if (awsimage != ""){
+                                    image = awsimage;
+                                }
+                            }else{
+                                /// ************** ფოტოები მანჰეიმის სერვერიდან
+                                manheimimage = AlbumFromManheim(token_manheim,vin_id);
+                                if (manheimimage != ""){
+                                    image = manheimimage;
+                                }
                             }
-                        }else{
-                            /// ************** ფოტოები მანჰეიმის სერვერიდან
-                            manheimimage = AlbumFromManheim(token_manheim,vin_id);
-                            if (manheimimage != ""){
-                                image = manheimimage;
-                            }
+                            totalPRODCT++;
+                            setTimeout(function(){
+                                post(make,model,year,cilindri,odo,driver_train,engine,vin_id,image);
+                            },1000 * (index + 1));
+                            ///console.log(make,model,year,cilindri,odo,driver_train,engine,vin_id,image);
+                        } catch (error) {
                         }
-
-                        totalPRODCT++;
-                        post(make,model,year,cilindri,odo,driver_train,engine,vin_id,image);
-                        ///console.log(make,model,year,cilindri,odo,driver_train,engine,vin_id,image);
                     }else{
-                        console.error("მოდელი ვერ მოიძებნა");
+                        console.warn("მოდელი ვერ მოიძებნა");
                         console.log(dataSET);
                     }
-                },5 * (index + 1));
+                });
             });
-            $('body').css('filter','blur(0px)');
-        });
+        }, 3000);
+
     }else{
         console.log("Not on manheim");
     }
