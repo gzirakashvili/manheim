@@ -137,14 +137,33 @@ $(document).ready(function(){
                 model2 = model2.replace('xDrive','').replace('i','').replace('e','');
             }
         }
+        /// Bently
+        if (mid == 78) {
+            model = model.replace("Continental GT",'Continental').replace(" EWB","");
+            model2 = "";
+        }
+        /// Toyota
+        if (mid == 41){
+            model = model.replace("GR86",'GT86');
+        }
 
         model = model.toLowerCase().replaceAll(" ","");
         model2 =  model2.toLowerCase().replaceAll(" ","");
 
         ///console.log(model,model2,mid);
         for (const models of data_myauto['data']['models']) {
-            if (models.manId == mid && (models.title.toLowerCase() == model || models.title.toLowerCase() == model2)){
-                model_id = models.id;
+            if (mid == 4) { /// დათასეთი > მოდელში
+                if (models.manId == mid && model.includes(models.title.toLowerCase().replaceAll(" ",""))){
+                    model_id = models.id;
+                }
+            }else if (mid == 23){ /// დათასეთი > თრიმ-მოდელში
+                if (models.manId == mid && model2.includes(models.title.toLowerCase().replaceAll(" ",""))){
+                    model_id = models.id;
+                }
+            }else{ ///
+                if (models.manId == mid && (models.title.toLowerCase() == model || models.title.toLowerCase() == model2)){
+                    model_id = models.id;
+                }
             }
 
         }
@@ -158,6 +177,7 @@ $(document).ready(function(){
         for (const marks of data_myauto['data']['mans']) {
             if (marks.title.toLowerCase() == mname){
                 make = marks.id;
+                console.log(marks.title);
             }
         }
         return make;
@@ -274,7 +294,7 @@ $(document).ready(function(){
                 SearchResults.each(function(index) {
                     var that = this;
                     var dataSET = JSON.parse($(that).find('.stockwave-vehicle-info').text());
-                    var make = detect_make(dataSET.designatedDescriptionEnrichment.manufacturer); /// მარკა
+                    var make = detect_make(dataSET.designatedDescriptionEnrichment.make); /// მარკა
                     var trim_model = dataSET.designatedDescriptionEnrichment.trim.toString(); /// მოდელი2
                     var model = detect_model(dataSET.designatedDescriptionEnrichment.model,trim_model,make); /// მოდელი
                     var year = dataSET.sourceYear; /// წელი
@@ -289,7 +309,7 @@ $(document).ready(function(){
                     var awslink = $(that).find('span.VehicleReportLink').children('span.Tracker__container').children('a').attr('href'); /// ლინკი AWS სერვერისთვის
                     var token_manheim = $(document).find('mcom-header').attr('token'); /// მანჰეიმის ავტორიზაციის ტოკენი
 
-                    console.log("Starting "+dataSET.designatedDescriptionEnrichment.manufacturer.toString()+" "+dataSET.designatedDescriptionEnrichment.model.toString()+" "+year.toString());
+                    console.log("Starting "+dataSET.designatedDescriptionEnrichment.make.toString()+" "+dataSET.designatedDescriptionEnrichment.model.toString()+" "+year.toString());
                     if (make != false && model != false) {
                         try {
                             if (awslink.indexOf("disclosureid") > -1){
@@ -306,10 +326,12 @@ $(document).ready(function(){
                                 }
                             }
                             totalPRODCT++;
+                            /*
                             setTimeout(function(){
                                 post(make,model,year,cilindri,odo,driver_train,engine,vin_id,image);
                             },1000 * (index + 1));
-                            ///console.log(make,model,year,cilindri,odo,driver_train,engine,vin_id,image);
+                            */
+                            console.log(make,model,year,cilindri,odo,driver_train,engine,vin_id,image);
                         } catch (error) {
                         }
                     }else{
@@ -318,7 +340,7 @@ $(document).ready(function(){
                     }
                 });
             });
-        }, 3000);
+        }, 6000);
 
     }else{
         console.log("Not on manheim");
