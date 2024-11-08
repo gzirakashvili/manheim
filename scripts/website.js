@@ -326,12 +326,12 @@ $(document).ready(function(){
                                 }
                             }
                             totalPRODCT++;
-                            /*
+                            
                             setTimeout(function(){
                                 post(make,model,year,cilindri,odo,driver_train,engine,vin_id,image);
                             },1000 * (index + 1));
-                            */
-                            console.log(make,model,year,cilindri,odo,driver_train,engine,vin_id,image);
+                            
+                            ///console.log(make,model,year,cilindri,odo,driver_train,engine,vin_id,image);
                         } catch (error) {
                         }
                     }else{
