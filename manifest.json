@@ -13,7 +13,7 @@
     "service_worker": "scripts/background.js"
   },
   "host_permissions": [
-    "https://*.manheim.com/*","https://manheim.com/*"
+    "https://*.manheim.com/*","https://manheim.com/*","https://*.copart.com/*"
   ],
   "action": {
     "default_popup": "index.html",
@@ -27,8 +27,11 @@
   "content_scripts": [
     {
         "matches": ["https://*.manheim.com/*"],
-        "js": ["scripts/jquery.js","login.js","data_set_myauto.js","scripts/website.js"],
-        "world": "MAIN"
+        "js": ["scripts/jquery.js","login.js","data_set_myauto.js","scripts/manheim.js"]
+    },
+    {
+      "matches": ["https://*.copart.com/*"],
+      "js": ["scripts/jquery.js","login.js","data_set_myauto.js","scripts/copart.js"]
     }
   ],
   "permissions": ["scripting"],
