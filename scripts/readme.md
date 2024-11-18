@@ -19,7 +19,7 @@
 
 1. გადმოწერეთ:
    ```
-    https://github.com/gzirakashvili/manheim/releases/tag/mci
+    https://github.com/gzirakashvili/manheim/releases/tag/mci 
 2. ამოაარქივეთ
 3. გახსენით ქრომი
 4. გადადით ექსთენშენების გვერდზე
