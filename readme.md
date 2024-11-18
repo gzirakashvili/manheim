@@ -1,4 +1,4 @@
-# მანჰეიმი
+# კოპარტი და იააი
 
 ![Project Logo](https://github.com/gzirakashvili/manheim/blob/all_in_one/logo.png) <!-- Optional: Add a logo or image -->
 
@@ -18,7 +18,7 @@
 
 1. გადმოწერეთ:
    ```
-    https://github.com/gzirakashvili/manheim/releases/tag/mci
+    https://github.com/gzirakashvili/manheim/releases/tag/ci
 2. ამოაარქივეთ
 3. გახსენით ქრომი
 4. გადადით ექსთენშენების გვერდზე
