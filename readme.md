@@ -4,8 +4,8 @@
 
 ## 🚀 მიმოხილვა
 
-რას აკეთებს? - მოცემული საიტებიდან გადააქვს განცხადებები MYAUTO-ს პლატფორმაზე
-როგორ აკეთთებს? - @gzirakashvili 
+# რას აკეთებს? - მოცემული საიტებიდან გადააქვს განცხადებები MYAUTO-ს პლატფორმაზე
+# როგორ აკეთთებს? - @gzirakashvili 
 
 ### ფუნქციები
 
@@ -19,8 +19,9 @@
 1. გადმოწერეთ:
    ```bash
    git clone https://github.com/yourusername/project-name.git
-
-1.2 Download Repository as ZIP
+```
+[გადმოწერის ლინკი](https://github.com/gzirakashvili/manheim/releases/tag/mci).
+```
 2. ამოაარქივეთ
 3. გახსენით ქრომი
 4. გადადით ექსთენშენების გვერდზე
