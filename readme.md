@@ -1,22 +1,27 @@
 # Project Name
 
-![Project Logo](link-to-your-logo.png) <!-- Optional: Add a logo or image -->
+![Project Logo](https://github.com/gzirakashvili/manheim/blob/all_in_one/logo.png) <!-- Optional: Add a logo or image -->
 
-## 🚀 Overview
+## 🚀 მიმოხილვა
 
-Briefly describe your project. What does it do? Why did you create it? What technologies are used? 
+რას აკეთებს? - მოცემული საიტებიდან გადააქვს განცხადებები MYAUTO-ს პლატფორმაზე
+როგორ აკეთთებს? - @gzirakashvili 
 
-### Features
+### ფუნქციები
 
-- Feature 1
-- Feature 2
-- Feature 3
-- Feature 4
+- კოპარტი - copart.com
+- იააი - iaai.com
 
-## 📦 Installation
+## 📦 ინსტალაცია
 
-Follow these steps to get your project up and running:
+მიყევით ინსტრუქციას ინსტალაციისთვის:
 
-1. Clone the repository:
+1. გადმოწერეთ:
    ```bash
    git clone https://github.com/yourusername/project-name.git
+
+1.2 Download Repository as ZIP
+2. ამოაარქივეთ
+3. გახსენით ქრომი
+4. გადადით ექსთენშენების გვერდზე
+5. Load Unpacked და აიჩიეთ ამოარქივებული საქაღალდე
