@@ -19,7 +19,7 @@
 1. გადმოწერეთ:
    ```bash
    git clone https://github.com/yourusername/project-name.git
-`https://github.com/gzirakashvili/manheim/releases/tag/mci`
+    `https://github.com/gzirakashvili/manheim/releases/tag/mci`
 2. ამოაარქივეთ
 3. გახსენით ქრომი
 4. გადადით ექსთენშენების გვერდზე
