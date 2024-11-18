@@ -1,16 +1,16 @@
-# Project Name
+# მანჰეიმი
 
 ![Project Logo](https://github.com/gzirakashvili/manheim/blob/all_in_one/logo.png) <!-- Optional: Add a logo or image -->
 
 ## 🚀 მიმოხილვა
 
-# რას აკეთებს? - მოცემული საიტებიდან გადააქვს განცხადებები MYAUTO-ს პლატფორმაზე
-# როგორ აკეთთებს? - @gzirakashvili 
+### რას აკეთებს? - მოცემული საიტებიდან გადააქვს განცხადებები MYAUTO-ს პლატფორმაზე
+### როგორ აკეთთებს? - @gzirakashvili 
 
-### ფუნქციები
+## ფუნქციები
 
 - კოპარტი - copart.com
-- იააი - iaai.com
+* იააი - iaai.com
 
 ## 📦 ინსტალაცია
 
