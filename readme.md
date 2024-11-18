@@ -1,4 +1,4 @@
-# მანჰეიმი
+# კოპარტი და იააი
 
 ![Project Logo](https://github.com/gzirakashvili/manheim/blob/all_in_one/logo.png) <!-- Optional: Add a logo or image -->
 
