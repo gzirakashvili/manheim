@@ -3656,15 +3656,6 @@ data: {
         isSpec: false
     },
     {
-        id: 1804,
-        manId: 25,
-        title: 'AMGGT',
-        group: 'GT-Class',
-        isCar: true,
-        isMoto: false,
-        isSpec: false
-    },
-    {
         id: 4858,
         manId: 25,
         title: 'AMGGTC',
@@ -3686,6 +3677,15 @@ data: {
         id: 1805,
         manId: 25,
         title: 'AMGGTS',
+        group: 'GT-Class',
+        isCar: true,
+        isMoto: false,
+        isSpec: false
+    },
+    {
+        id: 1804,
+        manId: 25,
+        title: 'AMGGT',
         group: 'GT-Class',
         isCar: true,
         isMoto: false,
