@@ -1,4 +1,3 @@
-
 $(document).ready(function(){
 
     function detect_make(mname){
@@ -15,15 +14,10 @@ $(document).ready(function(){
 
     function detect_model(model,mid){
         var model_id = false;
-        model = model.split(',');
         
         for (const models of data_myauto['data']['models']) {
-            if ((models.title.toLowerCase() == model[0].toLowerCase().replaceAll(' ','') || models.title.toLowerCase() == model[1].toLowerCase().replaceAll(' ','') || models.title.toLowerCase() == model[2].toLowerCase().replaceAll(' ','')) && models.manId === mid){
-                model_id = models.id;
-            }else if ((model_id == false) && (models.title.toLowerCase().includes(model[0].toLowerCase().replaceAll(' ','')) || models.title.toLowerCase().includes(model[1].toLowerCase().replaceAll(' ',''))) && models.manId === mid){
-                model_id = models.id;
-            }else if ((model_id == false) && (model[0].toLowerCase().replaceAll(' ','').includes(models.title.toLowerCase()) || model[1].toLowerCase().replaceAll(' ','').includes(models.title.toLowerCase())) && models.manId === mid){
-                model_id = models.id;
+            if ((model_id == false) && model.toLowerCase().replaceAll(' ','').includes(models.title.toLowerCase()) && models.manId === mid){
+                model_id = models.title;
             }
         }
         return model_id;
@@ -54,7 +48,7 @@ $(document).ready(function(){
                   }).done(function(response) {
 
                     make = response.data.lotDetails.mkn;
-                    model = response.data.lotDetails.lmg+","+response.data.lotDetails.lm+","+response.data.lotDetails.lmc;
+                    model = response.data.lotDetails.ld.replace(response.data.lotDetails.lcy,'').replace(response.data.lotDetails.mkn,'').trim().replaceAll(' ','');
                     driver_train = response.data.lotDetails.drv.toString();
 
                     if (driver_train.includes('Front-wheel')) {
@@ -80,10 +74,10 @@ $(document).ready(function(){
                     make = detect_make(make);
                     model = detect_model(model, make);
 
+                    console.log(make,model,engine,driver_train,cilinder,odo,id,images);
                     if ((make != false) && (model != false)){
-                        ///console.log(make,model,engine,driver_train,cilinder,odo,id,images);
                         id = "C"+id+"T";
-                        post(make,model,year,cilinder,odo,driver_train,engine,id,images);
+                        ///post(make,model,year,cilinder,odo,driver_train,engine,id,images);
                     }else{
                         console.warn("მოდელი ვერ მოიძებნა");
                     }

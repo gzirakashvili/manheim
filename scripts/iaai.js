@@ -14,9 +14,13 @@ $(document).ready(function(){
     function detect_model(text,mid){
         var model_id = false;
         text = text.replaceAll(' ', '');
-        
+
+        if (mid==25 && text.includes('3') && text.toLowerCase().includes('amg')){
+            text = text.replace('AMG').replace('3','3AMG')
+        }
+
         for (const models of data_myauto['data']['models']) {
-            if (text.toLowerCase().includes(models.title.toLowerCase()) && models.manId === mid){
+            if (model_id == false && text.toLowerCase().includes(models.title.toLowerCase()) && models.manId === mid){
                 model_id = models.id;
             }
         }
@@ -89,9 +93,9 @@ $(document).ready(function(){
                         console.log("Starting "+name.toString());
                         
                         if ((make != false) && (model != false)){
-                            ///console.log(make,model,year,cyl,odo,driver_train,engine,id,images);
+                            console.log(make,model,year,cyl,odo,driver_train,engine,id,images);
                             id = "I"+id+"I";
-                            post(make,model,year,cyl,odo,driver_train,engine,id,images);
+                            ///post(make,model,year,cyl,odo,driver_train,engine,id,images);
                         }else{
                             console.warn("მოდელი ვერ მოიძებნა");
                         }
