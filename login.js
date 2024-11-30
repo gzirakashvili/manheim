@@ -97,6 +97,41 @@ var token = $.ajax({
 }).responseJSON;
 token = token.data.access_token;
 
+function post_a1(title_name,make_a1,model_a1,year,cilinder,odo,driver_train_a1,engine,id,image,tranmsission,color,color_inter,realvin,fuel_type,car_type,vin_code){
+    $.ajax({
+        type: "POST",
+        crossDomain: true,
+        url: "https://auto1-ge.preview-domain.com/api/addproduct.php",
+        data: {
+            'title_name':title_name,
+            'make':make_a1,
+            'model':model_a1,
+            'vin':id,
+            'vin':vin_code,
+            'doors':'4',
+            'type':car_type,
+            'fuel_type':fuel_type,
+            'engine_size':engine,
+            'transmission':tranmsission,
+            'drive':driver_train_a1,
+            'cylinder':cilinder,
+            'color':color,
+            'color_inter':color_inter,
+            'odo':odo,
+            'year':year,
+            'images':image},
+            dataType: "json",
+        success: function(response) {
+            if (response.status != 200) {
+                console.log(response);
+            }
+        },
+        error: function(response) {
+            console.log(response);
+        }
+    });
+}
+
 function post(car,car_model,year,cilindri,milage,driver_train,engine,vin_id,image){
     var json_data = {
         'type': 'car',
