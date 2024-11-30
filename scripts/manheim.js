@@ -62,7 +62,6 @@ $(document).ready(function(){
         for (const marks of data_myauto['data']['mans']) {
             if (marks.title.toLowerCase() == mname){
                 make = marks.id;
-                console.log(marks.title);
             }
         }
         return make;
@@ -176,7 +175,6 @@ $(document).ready(function(){
                 var btn = $(this);
                 console.clear();
 
-                var totalPRODCT = 0;
                 var SearchResults = $('.SearchResultsDetailView__container');
                 SearchResults.each(function(index) {
                     var that = this;
@@ -184,7 +182,11 @@ $(document).ready(function(){
                     //// FOR AUTO1
                     var title_name = dataSET.designatedDescriptionEnrichment.manheimStandardDescription.shortDescription
                     var make_A1 = dataSET.designatedDescriptionEnrichment.make;
-                    var model_A1 = dataSET.designatedDescriptionEnrichment.model;
+                    if (make_A1.includes("Mercedes")){
+                        var model_A1 = dataSET.designatedDescriptionEnrichment.trim.toString().replaceAll(" ", "");
+                    }else{
+                        var model_A1 = dataSET.designatedDescriptionEnrichment.model;
+                    }
                     var driver_train_A1 = dataSET.driveTrain; /// წამყვანი თვლები 
                     driver_train_A1 = driver_train_A1.replace("RWD", "უკანა").replace("FWD", "წინა").replace("AWD", "4x4").replace("4WD", "4x4").replace("•","");
                     var color = dataSET.exteriorColor;
@@ -197,7 +199,6 @@ $(document).ready(function(){
                         transmiss = "მექანიკა";
                     }
                     var fuel_type = dataSET.engineFuelType;
-                    console.log(dataSET);
                     if (fuel_type == "Gasoline"){
                         fuel_type = "ბენზინი";
                     }else if (fuel_type == "Electric"){
@@ -209,7 +210,7 @@ $(document).ready(function(){
                     }
                     var car_type = "სედანი";
 
-                    /////////////////
+                    ////FOR MYAUTO
                     var make = detect_make(dataSET.designatedDescriptionEnrichment.make); /// მარკა
                     var trim_model = dataSET.designatedDescriptionEnrichment.trim.toString(); /// მოდელი2
                     var model = detect_model(dataSET.designatedDescriptionEnrichment.model,trim_model,make); /// მოდელი
@@ -226,36 +227,39 @@ $(document).ready(function(){
                     var token_manheim = $(document).find('mcom-header').attr('token'); /// მანჰეიმის ავტორიზაციის ტოკენი
 
                     console.log("Starting "+dataSET.designatedDescriptionEnrichment.make.toString()+" "+dataSET.designatedDescriptionEnrichment.model.toString()+" "+year.toString());
-                    if (make != false && model != false) {
-                        try {
-                            if (awslink.indexOf("disclosureid") > -1){
-                                /// ************** ფოტოები რაღაც სერვერიდან
-                                var awsimage = AlbumFromAWS(awslink);
-                                if (awsimage != ""){
-                                    image = awsimage;
+                            try {
+                                if (awslink.indexOf("disclosureid") > -1){
+                                    /// ************** ფოტოები რაღაც სერვერიდან
+                                    var awsimage = AlbumFromAWS(awslink);
+                                    if (awsimage != ""){
+                                        image = awsimage;
+                                    }
+                                }else{
+                                    /// ************** ფოტოები მანჰეიმის სერვერიდან
+                                    manheimimage = AlbumFromManheim(token_manheim,vin_id);
+                                    if (manheimimage != ""){
+                                        image = manheimimage;
+                                    }
                                 }
-                            }else{
-                                /// ************** ფოტოები მანჰეიმის სერვერიდან
-                                manheimimage = AlbumFromManheim(token_manheim,vin_id);
-                                if (manheimimage != ""){
-                                    image = manheimimage;
+                                if (btn.attr('auto1') == ""){
+                                    post_a1(title_name,make_A1,model_A1,year,cilindri,odo,driver_train_A1,engine,id,image,transmiss,color,color_inter,fuel_type,car_type,vin_id);
+                                    console.log(title_name,make_A1,model_A1);
+                                }else{
+                                    if (make != false && model != false) {
+                                        setTimeout(function(){
+                                            post(make,model,year,cilindri,odo,driver_train,engine,vin_id,image);
+                                        },1000 * (index + 1));
+                                        ///console.log(make,model,year,cilindri,odo,driver_train,engine,vin_id,image);
+
+                                    }else{
+                                        console.warn("მოდელი ვერ მოიძებნა");
+                                        console.log(dataSET);
+                                    }
                                 }
+
+                            } catch (error) {
                             }
-                            totalPRODCT++;
-                            
-                            setTimeout(function(){
-                                ///post(make,model,year,cilindri,odo,driver_train,engine,vin_id,image);
-                            },1000 * (index + 1));
-                            if (btn.attr('auto1') == ""){
-                                post_a1(title_name,make_A1,model_A1,year,cilindri,odo,driver_train_A1,engine,id,image,transmiss,color,color_inter,fuel_type,car_type,vin_id);
-                            }
-                            ///console.log(make,model,year,cilindri,odo,driver_train,engine,vin_id,image);
-                        } catch (error) {
-                        }
-                    }else{
-                        console.warn("მოდელი ვერ მოიძებნა");
-                        console.log(dataSET);
-                    }
+
                 });
             });
         }, 6000);

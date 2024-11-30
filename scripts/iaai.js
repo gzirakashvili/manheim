@@ -93,9 +93,9 @@ $(document).ready(function(){
                         console.log("Starting "+name.toString());
                         
                         if ((make != false) && (model != false)){
-                            console.log(make,model,year,cyl,odo,driver_train,engine,id,images);
+                            ///console.log(make,model,year,cyl,odo,driver_train,engine,id,images);
                             id = "I"+id+"I";
-                            ///post(make,model,year,cyl,odo,driver_train,engine,id,images);
+                            post(make,model,year,cyl,odo,driver_train,engine,id,images);
                         }else{
                             console.warn("მოდელი ვერ მოიძებნა");
                         }

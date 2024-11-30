@@ -49,7 +49,7 @@ $(document).ready(function(){
                     }
                   }).done(function(response) {
 
-                    /// for AUTO1
+                    ////FOR AUTO1
                     title_name = response.data.lotDetails.ld;
                     driver_train = response.data.lotDetails.drv.toString();
                     if (driver_train.includes('Front-wheel')) {
@@ -87,7 +87,7 @@ $(document).ready(function(){
                     make_a1 = response.data.lotDetails.mkn;
                     model_a1 = response.data.lotDetails.ld.replace(response.data.lotDetails.lcy,'').replace(response.data.lotDetails.mkn,'').trim().replaceAll(' ','');
 
-
+                    ////FOR MYAUTO
                     make = response.data.lotDetails.mkn;
                     model = response.data.lotDetails.ld.replace(response.data.lotDetails.lcy,'').replace(response.data.lotDetails.mkn,'').trim().replaceAll(' ','');
                     
@@ -114,12 +114,13 @@ $(document).ready(function(){
                     make = detect_make(make);
                     model = detect_model(model, make);
 
-                    console.log(make,model,engine,driver_train,cilinder,odo,id,images);
                     if ((make != false) && (model != false)){
                         id = "C"+id+"T";
-                        ///post(make,model,year,cilinder,odo,driver_train,engine,id,images);
                         if (btn.attr('auto1') == ""){
                             post_a1(title_name,make_a1,model_a1,year,cilinder,odo,driver_train_a1,engine,id,images,tranmsission,color,color_inter,fuel_type,car_type,realvin);
+                        }else{
+                            post(make,model,year,cilinder,odo,driver_train,engine,id,images);
+                            ///console.log(make,model,engine,driver_train,cilinder,odo,id,images);
                         }
                     }else{
                         console.warn("მოდელი ვერ მოიძებნა");
