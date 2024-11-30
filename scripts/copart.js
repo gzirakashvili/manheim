@@ -119,7 +119,7 @@ $(document).ready(function(){
                         id = "C"+id+"T";
                         ///post(make,model,year,cilinder,odo,driver_train,engine,id,images);
                         if (btn.attr('auto1') == ""){
-                            post_a1(title_name,make_a1,model_a1,year,cilinder,odo,driver_train_a1,engine,id,images,tranmsission,color,color_inter,realvin,fuel_type,car_type,realvin);
+                            post_a1(title_name,make_a1,model_a1,year,cilinder,odo,driver_train_a1,engine,id,images,tranmsission,color,color_inter,fuel_type,car_type,realvin);
                         }
                     }else{
                         console.warn("მოდელი ვერ მოიძებნა");

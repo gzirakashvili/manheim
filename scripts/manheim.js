@@ -164,14 +164,16 @@ $(document).ready(function(){
     if (window.location.toString().indexOf("search.manheim.com") > -1) {
 
         setTimeout(function(){
-            $("body").append("<button id='startMoving' style='position: fixed;border:0px;z-index: 10000;bottom: 40px;right: 40px;text-align: center;background: transparent;'>"+svg+"</button>");
+            $("body").append("<button class='startMoving' style='position: fixed;border:0px;z-index: 10000;bottom: 40px;right: 40px;text-align: center;background: transparent;'>"+svg+"</button>");
+            $("body").append("<button class='startMoving' auto1 style='position: fixed;border:0px;z-index: 10000;bottom: 100px;right: 45px;text-align: center;background: transparent;'><img src='https://auto1-ge.preview-domain.com/assets/images/logo/logo_AUTO1.png' width='120'></button>");
             $('select[data-test-id="results-per-page-select"] option').remove();
             $('select[data-test-id="results-per-page-select"]').append('<option value="5">5</option>');
             $('select[data-test-id="results-per-page-select"]').append('<option value="10">10</option>');
             $('select[data-test-id="results-per-page-select"]').append('<option value="15">15</option>');
             $('select[data-test-id="results-per-page-select"]').append('<option value="20">20</option>');
 
-            $("#startMoving").click(function(){
+            $(".startMoving").click(function(){
+                var btn = $(this);
                 console.clear();
 
                 var totalPRODCT = 0;
@@ -179,6 +181,35 @@ $(document).ready(function(){
                 SearchResults.each(function(index) {
                     var that = this;
                     var dataSET = JSON.parse($(that).find('.stockwave-vehicle-info').text());
+                    //// FOR AUTO1
+                    var title_name = dataSET.designatedDescriptionEnrichment.manheimStandardDescription.shortDescription
+                    var make_A1 = dataSET.designatedDescriptionEnrichment.make;
+                    var model_A1 = dataSET.designatedDescriptionEnrichment.model;
+                    var driver_train_A1 = dataSET.driveTrain; /// წამყვანი თვლები 
+                    driver_train_A1 = driver_train_A1.replace("RWD", "უკანა").replace("FWD", "წინა").replace("AWD", "4x4").replace("4WD", "4x4").replace("•","");
+                    var color = dataSET.exteriorColor;
+                    var color_inter = dataSET.interiorColor;
+                    var id = dataSET.disclosureId;
+                    var transmiss = dataSET.designatedDescriptionEnrichment.powertrain.transmission.type;
+                    if (transmiss == "Automatic"){
+                        transmiss = "ავტომატიკა";
+                    }else{
+                        transmiss = "მექანიკა";
+                    }
+                    var fuel_type = dataSET.engineFuelType;
+                    console.log(dataSET);
+                    if (fuel_type == "Gasoline"){
+                        fuel_type = "ბენზინი";
+                    }else if (fuel_type == "Electric"){
+                        fuel_type = "ელექტრო";
+                    }else if (fuel_type == "Diesel"){
+                        fuel_type = "დიზელი";
+                    }else{
+                        fuel_type = "ჰიბრიდი";
+                    }
+                    var car_type = "სედანი";
+
+                    /////////////////
                     var make = detect_make(dataSET.designatedDescriptionEnrichment.make); /// მარკა
                     var trim_model = dataSET.designatedDescriptionEnrichment.trim.toString(); /// მოდელი2
                     var model = detect_model(dataSET.designatedDescriptionEnrichment.model,trim_model,make); /// მოდელი
@@ -213,9 +244,11 @@ $(document).ready(function(){
                             totalPRODCT++;
                             
                             setTimeout(function(){
-                                post(make,model,year,cilindri,odo,driver_train,engine,vin_id,image);
+                                ///post(make,model,year,cilindri,odo,driver_train,engine,vin_id,image);
                             },1000 * (index + 1));
-                            
+                            if (btn.attr('auto1') == ""){
+                                post_a1(title_name,make_A1,model_A1,year,cilindri,odo,driver_train_A1,engine,id,image,transmiss,color,color_inter,fuel_type,car_type,vin_id);
+                            }
                             ///console.log(make,model,year,cilindri,odo,driver_train,engine,vin_id,image);
                         } catch (error) {
                         }

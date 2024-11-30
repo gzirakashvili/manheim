@@ -97,17 +97,17 @@ var token = $.ajax({
 }).responseJSON;
 token = token.data.access_token;
 
-function post_a1(title_name,make_a1,model_a1,year,cilinder,odo,driver_train_a1,engine,id,image,tranmsission,color,color_inter,realvin,fuel_type,car_type,vin_code){
+function post_a1(title_name,make_a1,model_a1,year,cilinder,odo,driver_train_a1,engine,id,image,tranmsission,color,color_inter,fuel_type,car_type,vin_code){
     $.ajax({
         type: "POST",
         crossDomain: true,
-        url: "https://auto1-ge.preview-domain.com/api/addproduct.php",
+        url: "https://auto1.ge/api/addproduct.php",
         data: {
             'title_name':title_name,
             'make':make_a1,
             'model':model_a1,
             'vin':id,
-            'vin':vin_code,
+            'vin_code':vin_code,
             'doors':'4',
             'type':car_type,
             'fuel_type':fuel_type,
