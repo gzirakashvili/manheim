@@ -75,10 +75,10 @@ $(document).ready(function(){
                     make = detect_make(make);
                     model = detect_model(model, make);
 
-                    console.log(make,model,engine,driver_train,cilinder,odo,id,images);
+                    ///console.log(make,model,engine,driver_train,cilinder,odo,id,images);
                     if ((make != false) && (model != false)){
                         id = "C"+id+"T";
-                        ///post(make,model,year,cilinder,odo,driver_train,engine,id,images);
+                        post(make,model,year,cilinder,odo,driver_train,engine,id,images);
                     }else{
                         console.warn("მოდელი ვერ მოიძებნა");
                     }
