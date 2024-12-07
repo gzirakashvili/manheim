@@ -105,7 +105,7 @@ function post_a1(title_name,make_a1,model_a1,year,cilinder,odo,driver_train_a1,e
         data: {
             'title_name':title_name,
             'make':make_a1.replace(" ",""),
-            'model':model_a1.replace(" ",""),
+            'model':model_a1.replace(" ","").replace(" ","").replace(" ",""),
             'vin':id,
             'vin_code':vin_code,
             'doors':'4',
