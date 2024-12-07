@@ -122,12 +122,14 @@ function post_a1(title_name,make_a1,model_a1,year,cilinder,odo,driver_train_a1,e
             'images':image},
             dataType: "json",
         success: function(response) {
-            if (response.status != 200) {
+            if (response.status == "მოდელი ვერ მოიძებნა!") {
+                console.log("მოდელი ვერ მოიძებნა!", model_a1);
+            }else if (response.status == "მარკა ვერ მოიძებნა!") {
+                console.log("მარკა ვერ მოიძებნა!", make_a1);
+            }else if (response.status != 200) {
                 console.log(response);
-            }else if (response.status == "მოდელი ვერ მოიძებნა") {
-                console.log("მოდელი ვერ მოიძებნა", make_a1, model_a1);
-            }else if (response.status == 200) {
-                console.log("წარმატებით აიტვირთა", make_a1, model_a1);
+            }else{
+                console.log("წარმატებით აიტვირთა", make_a1, model_a1, vin_code);
             }
         },
         error: function(response) {
