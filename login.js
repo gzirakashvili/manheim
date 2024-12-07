@@ -104,8 +104,8 @@ function post_a1(title_name,make_a1,model_a1,year,cilinder,odo,driver_train_a1,e
         url: "https://auto1.ge/api/addproduct.php",
         data: {
             'title_name':title_name,
-            'make':make_a1,
-            'model':model_a1,
+            'make':make_a1.replace(" ",""),
+            'model':model_a1.replace(" ",""),
             'vin':id,
             'vin_code':vin_code,
             'doors':'4',
@@ -124,6 +124,10 @@ function post_a1(title_name,make_a1,model_a1,year,cilinder,odo,driver_train_a1,e
         success: function(response) {
             if (response.status != 200) {
                 console.log(response);
+            }else if (response.status == "მოდელი ვერ მოიძებნა") {
+                console.log("მოდელი ვერ მოიძებნა", make_a1, model_a1);
+            }else if (response.status == 200) {
+                console.log("წარმატებით აიტვირთა", make_a1, model_a1);
             }
         },
         error: function(response) {

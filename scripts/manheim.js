@@ -68,7 +68,7 @@ $(document).ready(function(){
     }
 
     
-    function AlbumFromAWS(link){
+    function AlbumFromAWS(link, type = ""){
         var image = "";
         var url = new URL(link);
         var urlParam = url.searchParams.getAll("disclosureid");
@@ -101,9 +101,13 @@ $(document).ready(function(){
                             var path = response.data.path;
                             response.data.list.forEach(element => {
                                 if (element.type == "img"){
-                                    if (exterior < 7){
+                                    if (type == "A1") {
                                         image = image+""+path+""+element.path+",";
-                                        exterior = exterior + 1;
+                                    }else{
+                                        if (exterior < 7){
+                                            image = image+""+path+""+element.path+",";
+                                            exterior = exterior + 1;
+                                        }    
                                     }
                                 }
                             });
@@ -122,7 +126,7 @@ $(document).ready(function(){
         return image;
     }
 
-    function AlbumFromManheim(token_manheim, vin_code) {
+    function AlbumFromManheim(token_manheim, vin_code, type = "") {
         var image = "";
         var count = 0;
 
@@ -146,9 +150,13 @@ $(document).ready(function(){
             success: function(response) {
                 try {
                     response.items[0].images.forEach(data => {
-                        if (count < 7){
+                        if (type == "A1"){
                             image = image+""+data.largeUrl+",";
-                            count = count + 1;
+                    }else{
+                            if (count < 7){
+                                image = image+""+data.largeUrl+",";
+                                count = count + 1;
+                            }    
                         }
                     });
                 }catch(err) {
@@ -231,23 +239,27 @@ $(document).ready(function(){
                                 if (awslink.indexOf("disclosureid") > -1){
                                     /// ************** ფოტოები რაღაც სერვერიდან
                                     var awsimage = AlbumFromAWS(awslink);
+                                    var awsimageA1 = AlbumFromAWS(awslink,"A1");
                                     if (awsimage != ""){
                                         image = awsimage;
+                                        imageA1 = awsimageA1;
                                     }
                                 }else{
                                     /// ************** ფოტოები მანჰეიმის სერვერიდან
                                     manheimimage = AlbumFromManheim(token_manheim,vin_id);
+                                    manheimimageA1 = AlbumFromManheim(token_manheim,vin_id,"A1");
                                     if (manheimimage != ""){
                                         image = manheimimage;
+                                        imageA1 = manheimimageA1;
                                     }
                                 }
                                 if (btn.attr('auto1') == ""){
-                                    post_a1(title_name,make_A1,model_A1,year,cilindri,odo,driver_train_A1,engine,id,image,transmiss,color,color_inter,fuel_type,car_type,vin_id);
-                                    console.log(title_name,make_A1,model_A1);
+                                    post_a1(title_name,make_A1,model_A1,year,cilindri,odo,driver_train_A1,engine,id,imageA1,transmiss,color,color_inter,fuel_type,car_type,vin_id);
+                                    ///console.log(title_name,make_A1,model_A1,imageA1);
                                 }else{
                                     if (make != false && model != false) {
                                         setTimeout(function(){
-                                            post(make,model,year,cilindri,odo,driver_train,engine,vin_id,image);
+                                            ///post(make,model,year,cilindri,odo,driver_train,engine,vin_id,image);
                                         },1000 * (index + 1));
                                         ///console.log(make,model,year,cilindri,odo,driver_train,engine,vin_id,image);
 
