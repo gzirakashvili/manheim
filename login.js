@@ -97,7 +97,7 @@ var token = $.ajax({
 }).responseJSON;
 token = token.data.access_token;
 
-function post_a1(title_name,make_a1,model_a1,year,cilinder,odo,driver_train_a1,engine,id,image,tranmsission,color,color_inter,fuel_type,car_type,vin_code){
+function post_a1(title_name,make_a1,model_a1,year,cilinder,odo,driver_train_a1,engine,id,image,tranmsission,color,color_inter,fuel_type,car_type,vin_code,price){
     $.ajax({
         type: "POST",
         crossDomain: true,
@@ -119,6 +119,7 @@ function post_a1(title_name,make_a1,model_a1,year,cilinder,odo,driver_train_a1,e
             'color_inter':color_inter,
             'odo':odo,
             'year':year,
+            'price':price,
             'images':image},
             dataType: "json",
         success: function(response) {

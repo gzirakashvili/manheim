@@ -101,7 +101,9 @@ $(document).ready(function(){
                             var path = response.data.path;
                             response.data.list.forEach(element => {
                                 if (type == "A1") {
-                                    image = image+""+path+""+element.path+",";
+                                    if (element.category[0] != 'damages'){
+                                        image = image+""+path+""+element.path+",";
+                                    }
                                 }else{
                                     if (exterior < 7){
                                         image = image+""+path+""+element.path+",";
@@ -218,6 +220,11 @@ $(document).ready(function(){
                         fuel_type = "ჰიბრიდი";
                     }
                     var car_type = "სედანი";
+                    if (dataSET.buyNowPrice != ""){
+                        var price = dataSET.buyNowPrice;
+                    }else{
+                        var price = "0";
+                    }
 
                     ////FOR MYAUTO
                     var make = detect_make(dataSET.designatedDescriptionEnrichment.make); /// მარკა
@@ -255,12 +262,12 @@ $(document).ready(function(){
                                     }
                                 }
                                 if (btn.attr('auto1') == ""){
-                                    post_a1(title_name,make_A1,model_A1,year,cilindri,odo,driver_train_A1,engine,id,imageA1,transmiss,color,color_inter,fuel_type,car_type,vin_id);
+                                    post_a1(title_name,make_A1,model_A1,year,cilindri,odo,driver_train_A1,engine,id,imageA1,transmiss,color,color_inter,fuel_type,car_type,vin_id,price);
                                     ///console.log(title_name,make_A1,model_A1,imageA1);
                                 }else{
                                     if (make != false && model != false) {
                                         setTimeout(function(){
-                                            ///post(make,model,year,cilindri,odo,driver_train,engine,vin_id,image);
+                                            post(make,model,year,cilindri,odo,driver_train,engine,vin_id,image);
                                         },1000 * (index + 1));
                                         ///console.log(make,model,year,cilindri,odo,driver_train,engine,vin_id,image);
 
