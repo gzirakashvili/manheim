@@ -190,14 +190,53 @@ $(document).ready(function(){
                     //// FOR AUTO1
                     var title_name = dataSET.designatedDescriptionEnrichment.manheimStandardDescription.shortDescription
                     var make_A1 = dataSET.designatedDescriptionEnrichment.make;
+                    var model2_A1 = dataSET.sourceTrim.toString().replaceAll(" ", "");
+
                     if (make_A1.includes("Mercedes")){
                         var model_A1 = dataSET.designatedDescriptionEnrichment.trim.toString().replaceAll(" ", "");
                         if (model_A1.includes("AMG")){
                             model_A1 = model_A1.replace("AMG","").replace("3S","3")+"AMG"
                         }
+                        if (model2_A1.includes('AMG GT')){
+                            model_A1 = model2_A1;
+                        }
+                        if (model_A1 == 'AMGGT53'){
+                            model_A1 = 'AMG53'
+                        }
+                        if (model_A1 == 'AMGS'){
+                            model_A1 = 'AMGGTS'
+                        }
+                        if (model_A1 == 'AMGR'){
+                            model_A1 = 'AMGGTR'
+                        }
+                        if (model_A1 == 'AMGC'){
+                            model_A1 = 'AMGGTC'
+                        }
                     }else{
                         var model_A1 = dataSET.designatedDescriptionEnrichment.model;
                     }
+
+                    /// BMW
+                    if (make_A1 == "BMW"){
+                        if (model_A1.includes('Series')){
+                            model_A1 = model2_A1.replace('xDrive','').replace('i','').replace('e','');
+                        }
+                    }
+                    /// Bently
+                    if (make_A1 == "Bently") {
+                        model_A1 = model_A1.replace("Continental GT",'Continental').replace(" EWB","");
+                    }
+                    /// Lexus
+                    if (make_A1 == "Lexus") {
+                        if (model_A1 != ""){
+                            model_A1 = model2_A1.replace("FSPORT","").replace("Sport","").replace("Handling","").replace("Premium","").replace("Luxury+","").replace("Overtrail","").replace("+","");
+                        }
+                    }
+                    /// Toyota
+                    if (make_A1 == "Toyota"){
+                        model_A1 = model_A1.replace("GR86",'GT86');
+                    }
+
                     var driver_train_A1 = dataSET.driveTrain; /// წამყვანი თვლები 
                     driver_train_A1 = driver_train_A1.replace("RWD", "უკანა").replace("FWD", "წინა").replace("AWD", "4x4").replace("4WD", "4x4").replace("•","");
                     var color = dataSET.exteriorColor;
@@ -263,7 +302,7 @@ $(document).ready(function(){
                                 }
                                 if (btn.attr('auto1') == ""){
                                     post_a1(title_name,make_A1,model_A1,year,cilindri,odo,driver_train_A1,engine,id,imageA1,transmiss,color,color_inter,fuel_type,car_type,vin_id,price);
-                                    ///console.log(title_name,make_A1,model_A1,imageA1);
+                                    console.log(title_name,make_A1,model_A1,imageA1);
                                 }else{
                                     if (make != false && model != false) {
                                         setTimeout(function(){
