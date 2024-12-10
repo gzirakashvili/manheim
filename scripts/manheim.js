@@ -190,10 +190,10 @@ $(document).ready(function(){
                     //// FOR AUTO1
                     var title_name = dataSET.designatedDescriptionEnrichment.manheimStandardDescription.shortDescription
                     var make_A1 = dataSET.designatedDescriptionEnrichment.make;
-                    var model2_A1 = dataSET.sourceTrim.toString().replaceAll(" ", "");
+                    var model2_A1 = dataSET.sourceTrim.toString().replaceAll(" ", "");  /// მოდელი 2
 
                     if (make_A1.includes("Mercedes")){
-                        var model_A1 = dataSET.designatedDescriptionEnrichment.trim.toString().replaceAll(" ", "");
+                        var model_A1 = dataSET.designatedDescriptionEnrichment.trim.toString().replaceAll(" ", "");  /// მოდელი 1
                         if (model_A1.includes("AMG")){
                             model_A1 = model_A1.replace("AMG","").replace("3S","3")+"AMG"
                         }
@@ -213,7 +213,7 @@ $(document).ready(function(){
                             model_A1 = 'AMGGTC'
                         }
                     }else{
-                        var model_A1 = dataSET.designatedDescriptionEnrichment.model;
+                        var model_A1 = dataSET.designatedDescriptionEnrichment.model;  //// მოდელი 3
                     }
 
                     /// BMW
