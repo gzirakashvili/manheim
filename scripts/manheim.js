@@ -222,6 +222,13 @@ $(document).ready(function(){
                             model_A1 = model2_A1.replace('xDrive','').replace('i','').replace('e','');
                         }
                     }
+                    /// Ford
+                    if (make_A1 == "Ford"){
+                        if (model_A1[0] == 'F'){
+                            model_A1 = model_A1.replace("-",'');
+                        }
+                    }
+                    
                     /// Bently
                     if (make_A1 == "Bently") {
                         model_A1 = model_A1.replace("Continental GT",'Continental').replace(" EWB","");
