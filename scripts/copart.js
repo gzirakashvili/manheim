@@ -1,4 +1,3 @@
-
 $(document).ready(function(){
 
     function detect_make(mname){
@@ -15,10 +14,16 @@ $(document).ready(function(){
 
     function detect_model(model,mid){
         var model_id = false;
-        
+        if (mid == 25) {
+            model = model.replace("4MATIC","");
+        }
         for (const models of data_myauto['data']['models']) {
-            if ((model_id == false) && model.toLowerCase().replaceAll(' ','').includes(models.title.toLowerCase()) && models.manId === mid){
-                model_id = models.title;
+            if (model.toLowerCase().replaceAll(' ','') == models.title.toLowerCase() && models.manId === mid){
+                model_id = models.id;
+            }else if ((model_id == false) && model.toLowerCase().replaceAll(' ','').includes(models.title.toLowerCase()) && models.manId === mid){
+                model_id = models.id;
+            }else if ((model_id == false) && models.title.toLowerCase().includes(model.toLowerCase().replaceAll(' ','')) && models.manId === mid){
+                model_id = models.id;
             }
         }
         return model_id;
@@ -26,8 +31,9 @@ $(document).ready(function(){
 
 
     if (window.location.toString().indexOf("/lotSearchResults?") > -1) {
-        $("body").append("<button id='startMoving' style='position: fixed;border:0px;z-index: 10000;bottom: 40px;right: 40px;text-align: center;background: transparent;'>"+svg+"</button>");
-        $('#startMoving').click(function(){
+        $("body").append("<button class='startMoving' style='position: fixed;border:0px;z-index: 10000;bottom: 40px;right: 40px;text-align: center;background: transparent;'>"+svg+"</button>");
+        $('.startMoving').click(function(){
+            var btn = $(this);
             console.clear();
 
             var SearchResults = $('tbody.p-element tr.p-element');
@@ -48,10 +54,10 @@ $(document).ready(function(){
                     }
                   }).done(function(response) {
 
+                    driver_train = response.data.lotDetails.drv.toString();
                     make = response.data.lotDetails.mkn;
                     model = response.data.lotDetails.ld.replace(response.data.lotDetails.lcy,'').replace(response.data.lotDetails.mkn,'').trim().replaceAll(' ','');
-                    driver_train = response.data.lotDetails.drv.toString();
-
+                    
                     if (driver_train.includes('Front-wheel')) {
                         driver_train = 1;
                     }else if ((driver_train.includes('4x4')) || driver_train.includes('All')){
@@ -75,12 +81,12 @@ $(document).ready(function(){
                     make = detect_make(make);
                     model = detect_model(model, make);
 
-                    ///console.log(make,model,engine,driver_train,cilinder,odo,id,images);
                     if ((make != false) && (model != false)){
                         id = "C"+id+"T";
                         post(make,model,year,cilinder,odo,driver_train,engine,id,images);
+                        ///console.log(make,model,engine,driver_train,cilinder,odo,id,images);
                     }else{
-                        console.warn("მოდელი ვერ მოიძებნა");
+                        console.log("მოდელი ვერ მოიძებნა");
                     }
                   });
                   

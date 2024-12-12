@@ -26,10 +26,6 @@
   },
   "content_scripts": [
     {
-        "matches": ["https://*.manheim.com/*"],
-        "js": ["scripts/jquery.js","login.js","data_set_myauto.js","scripts/manheim.js"]
-    },
-    {
       "matches": ["https://*.copart.com/*"],
       "js": ["scripts/jquery.js","login.js","data_set_myauto.js","scripts/copart.js"]
     },
