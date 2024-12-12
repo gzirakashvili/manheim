@@ -18,7 +18,7 @@ $(document).ready(function(){
         if (mid==25 && text.includes('3') && text.toLowerCase().includes('amg')){
             text = text.replace('AMG').replace('3','3AMG').replace('AMGS',"AMG").replace("4MATIC","").replace('undefined','');
         }
-        console.log(text);
+
         for (const models of data_myauto['data']['models']) {
             if (text.toLowerCase() == models.title.toLowerCase() && models.manId === mid){
                 model_id = models.id;

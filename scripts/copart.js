@@ -79,7 +79,6 @@ $(document).ready(function(){
                     year = response.data.lotDetails.lcy.toString();
                     console.log("Starting "+make.toString()+" "+model.toString()+" "+year.toString());
                     make = detect_make(make);
-                    console.log(model);
                     model = detect_model(model, make);
 
                     if ((make != false) && (model != false)){
