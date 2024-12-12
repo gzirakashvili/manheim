@@ -225,7 +225,7 @@ function post(car,car_model,year,cilindri,milage,driver_train,engine,vin_id,imag
             }
         },
         error: function(response){
-            console.warn(response);
+            console.log(response);
         }
     });
 }

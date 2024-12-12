@@ -14,10 +14,16 @@ $(document).ready(function(){
 
     function detect_model(model,mid){
         var model_id = false;
-        
+        if (mid == 25) {
+            model = model.replace("4MATIC","");
+        }
         for (const models of data_myauto['data']['models']) {
-            if ((model_id == false) && model.toLowerCase().replaceAll(' ','').includes(models.title.toLowerCase()) && models.manId === mid){
-                model_id = models.title;
+            if (model.toLowerCase().replaceAll(' ','') == models.title.toLowerCase() && models.manId === mid){
+                model_id = models.id;
+            }else if ((model_id == false) && model.toLowerCase().replaceAll(' ','').includes(models.title.toLowerCase()) && models.manId === mid){
+                model_id = models.id;
+            }else if ((model_id == false) && models.title.toLowerCase().includes(model.toLowerCase().replaceAll(' ','')) && models.manId === mid){
+                model_id = models.id;
             }
         }
         return model_id;
@@ -26,7 +32,6 @@ $(document).ready(function(){
 
     if (window.location.toString().indexOf("/lotSearchResults?") > -1) {
         $("body").append("<button class='startMoving' style='position: fixed;border:0px;z-index: 10000;bottom: 40px;right: 40px;text-align: center;background: transparent;'>"+svg+"</button>");
-        ///$("body").append("<button class='startMoving' auto1 style='position: fixed;border:0px;z-index: 10000;bottom: 100px;right: 45px;text-align: center;background: transparent;'><img src='https://auto1-ge.preview-domain.com/assets/images/logo/logo_AUTO1.png' width='120'></button>");
         $('.startMoving').click(function(){
             var btn = $(this);
             console.clear();
@@ -49,45 +54,7 @@ $(document).ready(function(){
                     }
                   }).done(function(response) {
 
-                    ////FOR AUTO1
-                    title_name = response.data.lotDetails.ld;
                     driver_train = response.data.lotDetails.drv.toString();
-                    if (driver_train.includes('Front-wheel')) {
-                        driver_train_a1 = "წინა";
-                    }else if ((driver_train.includes('4x4')) || driver_train.includes('All')){
-                        driver_train_a1 = "4x4";
-                    }else{
-                        driver_train_a1 = "უკანა";
-                    }
-                    tranmsission = response.data.lotDetails.tsmn;
-                    if (tranmsission == 'AUTOMATIC') {
-                        tranmsission = "ავტომატიკა";
-                    }else{
-                        tranmsission = "მექანიკა";
-                    }
-                    color = response.data.lotDetails.clr;
-                    color_inter = response.data.lotDetails.clr;
-                    realvin = response.data.lotDetails.vf;
-                    fuel_type = response.data.lotDetails.ft;
-                    if (fuel_type.includes('GAS')) {
-                        fuel_type = "ბენზინი";
-                    }else if ((driver_train == 'DIESEL')){
-                        fuel_type = "დიზელი";
-                    }else if ((driver_train.includes('HYBRID'))){
-                        fuel_type = "ჰიბრიდი";
-                    }else{
-                        fuel_type = "ელექტრო";
-                    }
-                    car_type = response.data.lotDetails.vehicleTypeCode;
-                    if (car_type = 'VEHTYPE_V') {
-                        car_type = "სედანი";
-                    }else{
-                        car_type = "ჯიპი";
-                    }
-                    make_a1 = response.data.lotDetails.mkn;
-                    model_a1 = response.data.lotDetails.ld.replace(response.data.lotDetails.lcy,'').replace(response.data.lotDetails.mkn,'').trim().replaceAll(' ','');
-
-                    ////FOR MYAUTO
                     make = response.data.lotDetails.mkn;
                     model = response.data.lotDetails.ld.replace(response.data.lotDetails.lcy,'').replace(response.data.lotDetails.mkn,'').trim().replaceAll(' ','');
                     
@@ -112,18 +79,15 @@ $(document).ready(function(){
                     year = response.data.lotDetails.lcy.toString();
                     console.log("Starting "+make.toString()+" "+model.toString()+" "+year.toString());
                     make = detect_make(make);
+                    console.log(model);
                     model = detect_model(model, make);
 
                     if ((make != false) && (model != false)){
                         id = "C"+id+"T";
-                        if (btn.attr('auto1') == ""){
-                            post_a1(title_name,make_a1,model_a1,year,cilinder,odo,driver_train_a1,engine,id,images,tranmsission,color,color_inter,fuel_type,car_type,realvin);
-                        }else{
-                            post(make,model,year,cilinder,odo,driver_train,engine,id,images);
-                            ///console.log(make,model,engine,driver_train,cilinder,odo,id,images);
-                        }
+                        post(make,model,year,cilinder,odo,driver_train,engine,id,images);
+                        ///console.log(make,model,engine,driver_train,cilinder,odo,id,images);
                     }else{
-                        console.warn("მოდელი ვერ მოიძებნა");
+                        console.log("მოდელი ვერ მოიძებნა");
                     }
                   });
                   

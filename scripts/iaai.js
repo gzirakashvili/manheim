@@ -16,11 +16,15 @@ $(document).ready(function(){
         text = text.replaceAll(' ', '');
 
         if (mid==25 && text.includes('3') && text.toLowerCase().includes('amg')){
-            text = text.replace('AMG').replace('3','3AMG')
+            text = text.replace('AMG').replace('3','3AMG').replace('AMGS',"AMG").replace("4MATIC","").replace('undefined','');
         }
-
+        console.log(text);
         for (const models of data_myauto['data']['models']) {
-            if (model_id == false && text.toLowerCase().includes(models.title.toLowerCase()) && models.manId === mid){
+            if (text.toLowerCase() == models.title.toLowerCase() && models.manId === mid){
+                model_id = models.id;
+            }else if (model_id == false && models.title.toLowerCase().includes(text.toLowerCase()) && models.manId === mid){
+                model_id = models.id;
+            }else if (model_id == false && text.toLowerCase().includes(models.title.toLowerCase()) && models.manId === mid){
                 model_id = models.id;
             }
         }
@@ -97,7 +101,7 @@ $(document).ready(function(){
                             id = "I"+id+"I";
                             post(make,model,year,cyl,odo,driver_train,engine,id,images);
                         }else{
-                            console.warn("მოდელი ვერ მოიძებნა");
+                            console.log("მოდელი ვერ მოიძებნა");
                         }
     
                     }

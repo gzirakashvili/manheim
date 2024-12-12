@@ -14,6 +14,8 @@ $(document).ready(function(){
                 }else{
                     model2 = model2.replace("AMG ","").replace("3 S", "3").replace("3","3AMG");
                 }
+            }else if (model2.includes("Squared")) {
+                model2 = model2.replace(" 4x4","").replace(" Squared","");
             }
         }
         /// BMW
@@ -115,12 +117,12 @@ $(document).ready(function(){
                         }
                     },
                     error: function(response){
-                        console.warn(response);
+                        console.log(response);
                     }
                 });
             },
             error: function(response){
-                console.warn(response);
+                console.log(response);
             }
         });
         return image;
@@ -163,7 +165,7 @@ $(document).ready(function(){
                 }
             },
             error: function(response){
-                console.warn(response);
+                console.log(response);
             }
         });
         return image;
@@ -309,17 +311,17 @@ $(document).ready(function(){
                                 }
                                 if (btn.attr('auto1') == ""){
                                     post_a1(title_name,make_A1,model_A1,year,cilindri,odo,driver_train_A1,engine,id,imageA1,transmiss,color,color_inter,fuel_type,car_type,vin_id,price);
-                                    console.log(title_name,make_A1,model_A1,imageA1);
+                                    ///console.log(title_name,make_A1,model_A1,imageA1);
                                 }else{
                                     if (make != false && model != false) {
                                         setTimeout(function(){
                                             post(make,model,year,cilindri,odo,driver_train,engine,vin_id,image);
                                         },1000 * (index + 1));
-                                        ///console.log(make,model,year,cilindri,odo,driver_train,engine,vin_id,image);
+                                        ////console.log(make,model,year,cilindri,odo,driver_train,engine,vin_id,image);
 
                                     }else{
-                                        console.warn("მოდელი ვერ მოიძებნა");
-                                        console.log(dataSET);
+                                        console.log("მოდელი ვერ მოიძებნა");
+                                        console.log(make,model,dataSET);
                                     }
                                 }
 
